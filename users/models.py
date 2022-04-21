@@ -1,8 +1,10 @@
+import uuid as uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class User(AbstractUser):
-    pass
+    uuid = models.UUIDField(verbose_name='UUID', primary_key=True, default=uuid.uuid4)
+
 
 class UserWallet(models.Model):
     user = models.OneToOneField(User, verbose_name='Wallet owner', on_delete=models.CASCADE)
