@@ -10,8 +10,8 @@ from cryptocurrencies.apis.serializers import CurrencyPairSerializer
 
 class CurrencyPairAPI(APIView):
     http_method_names = ['get']
-    #authentication_classes = [TokenAuthentication]
-    #permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(operation_description="Consuming CryptoCompare API", query_serializer=CurrencyPairSerializer)
     def get(self, request):
