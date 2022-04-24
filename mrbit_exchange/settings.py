@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'users.apps.UsersConfig',
+    'trade.apps.TradeConfig',
     'cryptocurrencies.apps.CryptocurrenciesConfig',
 
     'rest_framework',

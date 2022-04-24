@@ -10,6 +10,12 @@ class User(AbstractUser):
         return f'{self.first_name} {self.last_name} ({self.uuid})' if self.first_name and self.last_name \
             else str(self.email)
 
+    def save(self, *args, **kwargs):
+        super(User, self).save(*args, **kwargs)
+        UserWallet.objects.get_or_create(
+            user=User.objects.get(uuid=self.uuid)
+        )
+
 
 class UserWallet(models.Model):
     uuid = models.UUIDField(verbose_name='UUID', primary_key=True, default=uuid.uuid4)
@@ -18,3 +24,11 @@ class UserWallet(models.Model):
 
     def __str__(self):
         return str(self.user)
+
+    '''def save(self, *args, **kwargs):
+        super(UserWallet, self).save(*args, **kwargs)
+        for crypto in Crypto.objects.all():
+            CryptoWallet.objects.get_or_create(
+                user_wallet=UserWallet.objects.get(uuid=self.uuid),
+                crypto=crypto
+            )'''

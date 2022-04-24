@@ -1,7 +1,7 @@
 import uuid as uuid
 from django.db import models
 
-from users.models import UserWallet
+from users.models import UserWallet, User
 
 
 class Crypto(models.Model):
@@ -19,8 +19,8 @@ class CryptoWallet(models.Model):
     uuid = models.UUIDField(verbose_name='UUID', primary_key=True, default=uuid.uuid4)
     user_wallet = models.ForeignKey(UserWallet, verbose_name='User Wallet', on_delete=models.CASCADE)
     crypto = models.ForeignKey(Crypto, verbose_name='Crypto', on_delete=models.CASCADE)
-    balance = models.DecimalField(verbose_name='Balance', max_digits=27, decimal_places=18, default=0)
-    
+    amount = models.DecimalField(verbose_name='Amount', max_digits=27, decimal_places=18, default=0)
+
     class Meta:
         unique_together = ['user_wallet', 'crypto']
 
