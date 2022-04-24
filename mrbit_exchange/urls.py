@@ -5,6 +5,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import routers, permissions
 
+from cryptocurrencies.apis.viewsets import CurrencyPairAPI
 from mrbit_exchange import settings
 from users.apis.viewsets import UserViewSet
 
@@ -26,10 +27,11 @@ router.register(r'users/user', UserViewSet)
 
 
 APIs = [
+    path('crypto/currency', CurrencyPairAPI.as_view())
 ]
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', admin.site.urls),
     path('apis/', include(router.urls)),
     path('apis/', include(APIs)),
     path(r'swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
