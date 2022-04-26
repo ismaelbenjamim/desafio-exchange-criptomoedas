@@ -23,6 +23,7 @@ INSTALLED_APPS = [
 
     'users.apps.UsersConfig',
     'trade.apps.TradeConfig',
+    'core.apps.CoreConfig',
     'cryptocurrencies.apps.CryptocurrenciesConfig',
 
     'rest_framework',
@@ -123,6 +124,10 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
+
+LOGIN_URL = 'login'
+
+LOGIN_REDIRECT_URL = '/admin/'
 
 EMAIL_HOST = config('EMAIL_HOST', default='localhost')
 EMAIL_PORT = config('EMAIL_PORT', default=25)
