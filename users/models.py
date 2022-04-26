@@ -1,4 +1,6 @@
 import uuid as uuid
+
+from django.apps import apps
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -25,10 +27,12 @@ class UserWallet(models.Model):
     def __str__(self):
         return str(self.user)
 
-    '''def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
         super(UserWallet, self).save(*args, **kwargs)
-        for crypto in Crypto.objects.all():
-            CryptoWallet.objects.get_or_create(
+        cryptos = apps.get_model(app_label='cryptocurrencies', model_name='Crypto')
+        cryptowallet = apps.get_model(app_label='cryptocurrencies', model_name='CryptoWallet')
+        for crypto in cryptos.objects.all():
+            cryptowallet.objects.get_or_create(
                 user_wallet=UserWallet.objects.get(uuid=self.uuid),
                 crypto=crypto
-            )'''
+            )

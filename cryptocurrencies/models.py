@@ -1,7 +1,7 @@
 import uuid as uuid
 from django.db import models
 
-from users.models import UserWallet, User
+from users.models import UserWallet
 
 
 class Crypto(models.Model):
@@ -14,6 +14,14 @@ class Crypto(models.Model):
     def __str__(self):
         return str(self.abbreviation)
 
+    def save(self, *args, **kwargs):
+        super(Crypto, self).save(*args, **kwargs)
+        for user_wallet in UserWallet.objects.all():
+            CryptoWallet.objects.get_or_create(
+                user_wallet=user_wallet,
+                crypto=Crypto.objects.get(uuid=self.uuid)
+            )
+
 
 class CryptoWallet(models.Model):
     uuid = models.UUIDField(verbose_name='UUID', primary_key=True, default=uuid.uuid4)
@@ -25,4 +33,4 @@ class CryptoWallet(models.Model):
         unique_together = ['user_wallet', 'crypto']
 
     def __str__(self):
-        return str(self.user_wallet.user)
+        return f'{self.crypto.abbreviation} - {self.user_wallet.user}'
