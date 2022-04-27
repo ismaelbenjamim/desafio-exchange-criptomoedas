@@ -2,6 +2,7 @@ import uuid as uuid
 
 from django.apps import apps
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -27,7 +28,17 @@ class UserWallet(models.Model):
     def __str__(self):
         return str(self.user)
 
+    def clean(self):
+        errors = {}
+
+        if self.balance < 0:
+            errors['balance'] = "It's not possible beacuse the value balance need is bigger zero"
+
+        if errors:
+            raise ValidationError(errors)
+
     def save(self, *args, **kwargs):
+        self.full_clean()
         super(UserWallet, self).save(*args, **kwargs)
         cryptos = apps.get_model(app_label='cryptocurrencies', model_name='Crypto')
         cryptowallet = apps.get_model(app_label='cryptocurrencies', model_name='CryptoWallet')

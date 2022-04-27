@@ -1,6 +1,7 @@
+from django.core.exceptions import ValidationError
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, status
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg import openapi
 from rest_framework.response import Response
@@ -13,8 +14,8 @@ class SellCryptoAPI(viewsets.ModelViewSet):
     queryset = Trade.objects.all()
     serializer_class = SellCryptoSerializer
     http_method_names = ['post']
-    #authentication_classes = [TokenAuthentication]
-    #permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(operation_summary='Sell Crypto API')
     def create(self, request, *args, **kwargs):
@@ -25,8 +26,8 @@ class BuyCryptoAPI(viewsets.ModelViewSet):
     queryset = Trade.objects.all()
     serializer_class = BuyCryptoIDSerializer
     http_method_names = ['post']
-    #authentication_classes = [TokenAuthentication]
-    #permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(operation_summary='Buy Crypto API')
     def create(self, request, *args, **kwargs):
@@ -45,7 +46,7 @@ class BuyCryptoAPI(viewsets.ModelViewSet):
               "main": False,
               "seller": get_last_trade.seller.uuid,
               "buyer": request.data['user'],
-              "child": get_last_trade.uuid
+              "root": get_last_trade.uuid
             }
         else:
             return Response({'message': 'This trade ID is not exists'}, status=status.HTTP_400_BAD_REQUEST)

@@ -1,6 +1,7 @@
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, status
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -15,14 +16,14 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     http_method_names = ['get', 'post', 'put', 'delete']
-    #authentication_classes = [TokenAuthentication]
-    #permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 class UserBalanceAPI(APIView):
     http_method_names = ['get']
-    #authentication_classes = [TokenAuthentication]
-    #permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(operation_description="Get the user balance", query_serializer=UserBalanceSerializer)
     def get(self, request):
@@ -41,14 +42,14 @@ class UserBalanceAPI(APIView):
 
 class UserWalletAPI(APIView):
     http_method_names = ['get']
-    #authentication_classes = [TokenAuthentication]
-    #permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(operation_description="Get the user wallet", query_serializer=UserWalletSerializer)
     def get(self, request):
         user_uuid = request.GET.get('user')
         crypto_in_usd = request.GET.get('crypto_in_usd')
-        user = User.objects.get(uuid=user_uuid)
+        user = get_object_or_404(User, uuid=user_uuid)
         user_wallet = UserWallet.objects.get(user=user)
         cryptos_wallet = CryptoWallet.objects.filter(user_wallet=user_wallet)
 

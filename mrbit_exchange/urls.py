@@ -16,11 +16,11 @@ from users.apis.viewsets import UserViewSet, UserWalletAPI, UserBalanceAPI
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Snippets API",
+      title="MRBIT API",
       default_version='v1',
-      description="Test description",
+      description="MRBIT Exchange",
       terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
+      contact=openapi.Contact(email="ismaelbenjamim15@hotmail.com"),
       license=openapi.License(name="BSD License"),
    ),
    public=True,
@@ -35,8 +35,8 @@ router.register(r'trades/buy', BuyCryptoAPI)
 
 APIs = [
     path('crypto/currency', CurrencyPairAPI.as_view()),
-    path('users/user-wallet', UserWalletAPI.as_view()),
-    path('users/balance', UserBalanceAPI.as_view())
+    path('wallet/user-wallet', UserWalletAPI.as_view()),
+    path('wallet/user-balance', UserBalanceAPI.as_view())
 ]
 
 urlpatterns = [
