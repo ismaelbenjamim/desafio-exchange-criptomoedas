@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
@@ -45,7 +46,7 @@ class BuyCryptoAPI(viewsets.ModelViewSet):
               "main": False,
               "seller": get_last_trade.seller.uuid,
               "buyer": request.data['user'],
-              "child": get_last_trade.uuid
+              "root": get_last_trade.uuid
             }
         else:
             return Response({'message': 'This trade ID is not exists'}, status=status.HTTP_400_BAD_REQUEST)

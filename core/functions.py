@@ -8,14 +8,14 @@ def generate_trade_id():
     return n.zfill(8)
 
 
-def validate_unique_id_trade(uuid, id, seller, crypto, amount, price, child):
+def validate_unique_id_trade(uuid, id, seller, crypto, amount, price, root):
     trade_model = apps.get_model(app_label='trade', model_name='Trade')
     search_trade_main = trade_model.objects.filter(id=id, main=True)
     if search_trade_main:
         trade_main = trade_model.objects.get(id=id, main=True)
         if uuid != trade_main.uuid:
             if seller != trade_main.seller or crypto != trade_main.crypto or amount != trade_main.amount or \
-                    price != trade_main.price or child != trade_main:
+                    price != trade_main.price or root != trade_main:
                 return "This is not possible because the trade has a different sequence"
 
 
