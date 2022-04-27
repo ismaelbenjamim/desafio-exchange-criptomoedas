@@ -1,6 +1,7 @@
 import uuid as uuid
 
 from django.apps import apps
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -12,6 +13,10 @@ class User(AbstractUser):
     def __str__(self):
         return f'{self.first_name} {self.last_name} ({self.uuid})' if self.first_name and self.last_name \
             else str(self.email)
+
+    def clean(self):
+        self.password = make_password(self.password)
+        super(User, self).clean()
 
     def save(self, *args, **kwargs):
         super(User, self).save(*args, **kwargs)
